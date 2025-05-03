@@ -53,7 +53,7 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
-```
+
 # Choosing Between Type 1 and Type 2 SCD
 
 When setting up a system to handle customer addresses, you have two main options: **Type 1** or **Type 2** Slowly Changing Dimensions (SCD). The choice depends on what your business needs:
@@ -78,7 +78,7 @@ CREATE TABLE CUSTOMER_ADDRESS_Type1 (
     ZipCode VARCHAR(20) NOT NULL,
     Country VARCHAR(50) NOT NULL,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
-);
+);```
 
 ## Type 2 SCD: Keep History with New Rows
 
@@ -99,13 +99,13 @@ CREATE TABLE CUSTOMER_ADDRESS_Type2 (
     EndDate DATE NULL,
     IsActive BOOLEAN NOT NULL DEFAULT TRUE,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
-);
+);```
 
 **Major Differences:**
 * **Type 1 SCD**: Simple, less storage, no history tracking.
 * **Type 2 SCD**: Tracks history, uses more storage, slightly more complex queries.
 
-```
+
 
 ***
 
