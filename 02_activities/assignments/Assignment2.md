@@ -14,10 +14,10 @@
     * Open a private window in your browser. Copy and paste the link to your pull request into the address bar. Make sure you can see your pull request properly. This helps the technical facilitator and learning support staff review your submission easily.
 
 Checklist:
-- [ ] Create a branch called `assignment-two`.
-- [ ] Ensure that the repository is public.
-- [ ] Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
-- [ ] Verify that the link is accessible in a private browser window.
+- [X] Create a branch called `assignment-two`.
+- [X] Ensure that the repository is public.
+- [X] Review [the PR description guidelines](https://github.com/UofT-DSI/onboarding/blob/main/onboarding_documents/submissions.md#guidelines-for-pull-request-descriptions) and adhere to them.
+- [X] Verify that the link is accessible in a private browser window.
 
 If you encounter any difficulties or have questions, please don't hesitate to reach out to our team via our Slack at `#cohort-6-help`. Our Technical Facilitators and Learning Support staff are here to help you navigate any challenges.
 
@@ -54,7 +54,53 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
 ```
-Your answer...
+Choosing Between Type 1 and Type 2 SCD
+
+When setting up a system to handle customer addresses, you have two main options: Type 1 or Type 2 Slowly Changing Dimensions (SCD). The choice depends on what your business needs:
+
+Type 1: Use this if you don't need to keep old address information. It's simple and overwrites the old address with the new one.
+Type 2: Use this if you need to track every change to an address (like for compliance or customer service). It keeps a record of all changes by adding new rows for keeping a trail of records for all the addresses.
+
+Type 1 SCD: Overwrite Old Data
+
+This method is straightforward. When an address changes, the old one is replaced with the new one. No history is kept, so it uses less storage.
+
+SQL Code:
+CREATE TABLE CUSTOMER_ADDRESS_Type1 (
+CustomerAddressID INT AUTO_INCREMENT PRIMARY KEY,
+CustomerID INT NOT NULL,
+Address VARCHAR(255) NOT NULL,
+City VARCHAR(100) NOT NULL,
+State VARCHAR(50) NOT NULL,
+ZipCode VARCHAR(20) NOT NULL,
+Country VARCHAR(50) NOT NULL,
+FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+-----
+Type 2 SCD: Keep History with New Rows
+
+This method keeps a full history of address changes. Every time an address is updated, a new row is added. It includes StartDate and EndDate to show when each address was valid, and an IsActive column to mark the current address.
+
+SQL Code:
+CREATE TABLE CUSTOMER_ADDRESS_Type2 (
+CustomerAddressID INT AUTO_INCREMENT PRIMARY KEY,
+CustomerID INT NOT NULL,
+Address VARCHAR(255) NOT NULL,
+City VARCHAR(100) NOT NULL,
+State VARCHAR(50) NOT NULL,
+ZipCode VARCHAR(20) NOT NULL,
+Country VARCHAR(50) NOT NULL,
+StartDate DATE NOT NULL,
+EndDate DATE NULL,
+IsActive BOOLEAN NOT NULL DEFAULT TRUE,
+FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+------
+Major Differences:
+
+Type 1 SCD: Simple, less storage, no history tracking.
+Type 2 SCD: Tracks history, uses more storage, slightly more complex queries.
+
 ```
 
 ***
